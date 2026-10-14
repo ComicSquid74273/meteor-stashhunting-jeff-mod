@@ -321,7 +321,7 @@ public class ChestIndex extends Module
     @EventHandler
     private void onTick(TickEvent.Pre event)
     {
-        if (mc.screen instanceof ContainerScreen) return;
+        if (mc.gui.screen() instanceof ContainerScreen) return;
 
         if (tickCounter < delay.get())
         {

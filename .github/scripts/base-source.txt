@@ -1,0 +1,34 @@
+# Base sync SCOPE -- synchronized from the BASE source branch (26.2) into every
+# other version branch.
+#
+# This file is consumed by .github/scripts/sync-base.sh. The sync scope is the
+# ENTIRE src/main/java tree of the source branch (all code: modules, mixins,
+# commands, hud, Addon.java, ...). The source branch (26.2) is canonical for
+# ALL code; every version branch mirrors its src/main/java after running that
+# branch's own loom migrateMappings.
+#
+# Rules that keep the scope honest:
+#   1. Every .java file under src/main/java/ on the source branch is synced,
+#      migrated, and overwrites/removes the target's files (mirror semantics).
+#      Anything committed to the source tree reaches every version branch --
+#      there is no per-file manifest to maintain.
+#   2. Code must stay branch-agnostic apart from MC mappings: the whole file is
+#      migrated with each target's loom. If a feature genuinely needs real
+#      per-version behavior, it cannot live inside this scope (and will only
+#      exist on the source branch unless handled specially).
+#   3. Branch metadata OUTSIDE the scope is never overwritten:
+#      - src/main/resources/* (mixins.json, fabric.mod.json, accesswidener):
+#        mixin classes discovered in the migrated src are registered
+#        idempotently by apply_manifest.py.
+#      - build.gradle / gradle.properties: loom/yarn pins and mod version stay
+#        per-branch; apply_manifest.py mirrors 26.2's compileOnly
+#        fabric-resource-loader-v1 into mojmap targets only.
+#
+# SOURCE RESOLUTION (sync-base.sh):
+#   The live origin/<source_branch> HEAD is used by default so new base
+#   commits propagate automatically. The "Last synced from" line below is the
+#   last validated baseline: it labels the PR delta and serves as a fallback
+#   if the live branch cannot be resolved. Bump it when a sync set has been
+#   reviewed and merged across targets.
+#
+# Last synced from: 26.2 @ deff775 (7-file QoL baseline; whole-tree scope active)

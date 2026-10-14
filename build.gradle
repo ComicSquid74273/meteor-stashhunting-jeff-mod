@@ -1,5 +1,5 @@
 plugins {
-    id 'net.fabricmc.fabric-loom' version '1.15.+'
+    id 'net.fabricmc.fabric-loom' version '1.17.+'
 }
 
 
@@ -43,6 +43,8 @@ dependencies {
 
     // Meteor
     implementation "meteordevelopment:meteor-client:${project.meteor_version}"
+    // Fabric API resource loader (compile only - the merged game jar has MinecraftServer implement DataResourceStore)
+    compileOnly "net.fabricmc.fabric-api:fabric-resource-loader-v1:2.0.13+9edec1269e"
     // XaeroPlus
     implementation "maven.modrinth:xaeroplus:${project.xaeroplus_version}"
     // XaeroWorldMap
@@ -60,6 +62,7 @@ java {
         languageVersion = JavaLanguageVersion.of(25)
     }
 }
+
 processResources {
     filesMatching("fabric.mod.json") {
         expand "version": project.version,

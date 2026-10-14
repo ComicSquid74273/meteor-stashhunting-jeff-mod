@@ -239,9 +239,9 @@ public class BetterStashFinder extends Module
             if (!storageBlocks.get().contains(blockEntity.getType())) continue;
 
             Block blockUnder = mc.level.getBlockState(blockEntity.getBlockPos().below()).getBlock();
-            if (ignoreTrialChambers.get() && blockUnder.equals(Blocks.WAXED_OXIDIZED_CUT_COPPER) ||
-                blockUnder.equals(Blocks.TUFF_BRICKS) || blockUnder.equals(Blocks.WAXED_COPPER_BLOCK) ||
-                blockUnder.equals(Blocks.WAXED_OXIDIZED_COPPER))
+            if (ignoreTrialChambers.get() && blockUnder.equals(Blocks.CUT_COPPER.waxed().oxidized()) ||
+                blockUnder.equals(Blocks.TUFF_BRICKS) || blockUnder.equals(Blocks.COPPER_BLOCK.waxed().unaffected()) ||
+                blockUnder.equals(Blocks.COPPER_BLOCK.waxed().oxidized()))
             {
                 continue;
             }
@@ -274,12 +274,12 @@ public class BetterStashFinder extends Module
                         case Chat -> info("Found stash at (highlight)%s(default), (highlight)%s(default).", chunk.x, chunk.z);
                         case Toast -> {
                             MeteorToast toast = new MeteorToast.Builder(title).icon(Items.CHEST).text("Found Stash!").build();
-                            mc.getToastManager().addToast(toast);
+                            mc.gui.toastManager().addToast(toast);
                         }
                         case Both -> {
                             info("Found stash at (highlight)%s(default), (highlight)%s(default).", chunk.x, chunk.z);
                             MeteorToast toast = new MeteorToast.Builder(title).icon(Items.CHEST).text("Found Stash!").build();
-                            mc.getToastManager().addToast(toast);
+                            mc.gui.toastManager().addToast(toast);
                         }
                     }
                 }
@@ -392,7 +392,7 @@ public class BetterStashFinder extends Module
             table.add(theme.label("Total: " + chunk.getTotal()));
 
             WButton open = table.add(theme.button("Open")).widget();
-            open.action = () -> mc.setScreen(new ChunkScreen(theme, chunk));
+            open.action = () -> mc.gui.setScreen(new ChunkScreen(theme, chunk));
 
             WButton gotoBtn = table.add(theme.button("Goto")).widget();
             gotoBtn.action = () -> PathManagers.get().moveTo(new BlockPos(chunk.x, 0, chunk.z), true);
